@@ -51,10 +51,10 @@ public class UserService  {
         logger.info("Fetching user with id {}", id);
         User user = userRepository.findById(id).orElse(null);
 
-        if (user != null) {
+//        if (user != null) {
             String greet = generateGreetingMsg(user.getRole());
             user.setUserGreetingMessage(greet);
-        }
+//        }
         return user;
 
         //TODO: 1.3
@@ -89,10 +89,12 @@ public class UserService  {
         // return the complete greeting message as a String
         // write a unit test to verify this method works as expected
         String op = "";
-        if (role.equalsIgnoreCase("admin")){
+        if (role!=null && role.equalsIgnoreCase("admin")){
             op = "Admin access enabled";
-        } else if (role.equalsIgnoreCase("user")) {
+        } else if (role!=null && role.equalsIgnoreCase("user")) {
             op = "User Access";
+        } else {
+            op = "User not available";
         }
         return op;
     }

@@ -4,6 +4,7 @@ import com.orion.DigiWallet.model.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,7 +18,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     // Write a method to find a card by cardNumber
     // Hint: Use Spring Data JPA method naming
     // Example return type: Optional<Card>
-    Optional<Card> findByCardNumber(String cardNumber);
+    List<Card> findByCardNumber(String cardNumber);
 
     // TODO: 3.2
     // Write a method to check if a card exists by cardNumber

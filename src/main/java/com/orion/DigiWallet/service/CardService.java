@@ -11,10 +11,13 @@ public class CardService {
 
     //TODO: 2.1.1
     // create a private final field for CardRepository (dependency)
-
+    private final CardRepository cardRepository;
 
     //TODO: 2.1.2
     // create a constructor to inject CardRepository
+    public CardService(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
 
 
     //TODO: 2.1.3
@@ -41,6 +44,7 @@ public class CardService {
 
         // STEP 1: Fetch card by ID
         // throw runtime exception if not found "Card not found with id: " + id
+
         return null;
     }
 
@@ -54,6 +58,8 @@ public class CardService {
         // STEP 1: Fetch existing card
         // throw runtime exception if not found "Card not found with id: " + id
        ;
+
+
 
         // STEP 2: Update allowed fields
         // For simplicity, assume all fields except id and cardNumber can be updated
