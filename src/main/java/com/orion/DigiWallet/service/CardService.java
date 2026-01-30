@@ -30,9 +30,11 @@ public class CardService {
         // STEP 1: Check if card number already exists
         // to ensure uniqueness of card numbers in the system
         // throw runtime exception if it exists "Card number already exists"
-
+        if(cardRepository.existsByCardNumber(card.getCardNumber())){
+            throw new RuntimeException("Card number already exists");
+        }
         // STEP 2: Save and return the card
-        return null;
+        return cardRepository.save(card);
     }
 
     //TODO: 2.1.4
@@ -44,8 +46,8 @@ public class CardService {
 
         // STEP 1: Fetch card by ID
         // throw runtime exception if not found "Card not found with id: " + id
-
-        return null;
+        return cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Card not found with id: " + id));
     }
 
     //TODO: 2.1.5
@@ -58,15 +60,18 @@ public class CardService {
         // STEP 1: Fetch existing card
         // throw runtime exception if not found "Card not found with id: " + id
        ;
-
-
+        Card card = getCardById(id);
 
         // STEP 2: Update allowed fields
         // For simplicity, assume all fields except id and cardNumber can be updated
         // from updatedCard object get the values and set them to existingCard which you fetched in STEP 1
-
+        card.setCardType(updatedCard.getCardType());
+        card.setStatus(updatedCard.getStatus());
+        card.setExpiryDate(updatedCard.getExpiryDate());
+        card.setIssuedAt(updatedCard.getIssuedAt());
+        card.setWallet(updatedCard.getWallet());
         // STEP 3: Save updated card
-        return null;
+        return cardRepository.save(card);
     }
 
     //TODO: 2.1.6
@@ -78,8 +83,10 @@ public class CardService {
 
         // STEP 1: Check if card exists
         // throw runtime exception if not found "Card not found with id: " + id
+        Card card = getCardById(id);
 
         // STEP 2: Delete card
+        cardRepository.delete(card);
 
     }
 }

@@ -29,8 +29,8 @@ class CardServiceTest {
     private CardService cardService;
 
     // ---------------------------------------------------------
-    // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+    // REMOVE // @Disabled TO ENABLE THE TESTS
+//    // @Disabled
     @Nested
     @DisplayName("createCard()")
     class CreateCardTests {
@@ -78,8 +78,8 @@ class CardServiceTest {
     }
 
     // ---------------------------------------------------------
-    // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+    // REMOVE // @Disabled TO ENABLE THE TESTS
+    // @Disabled
     @Nested
     @DisplayName("getCardById()")
     class GetCardByIdTests {
@@ -119,8 +119,8 @@ class CardServiceTest {
     }
 
     // ---------------------------------------------------------
-    // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+    // REMOVE // @Disabled TO ENABLE THE TESTS
+    // @Disabled
     @Nested
     @DisplayName("updateCard()")
     class UpdateCardTests {
@@ -169,41 +169,54 @@ class CardServiceTest {
     }
 
     // ---------------------------------------------------------
-    // REMOVE @Disabled TO ENABLE THE TESTS
-    @Disabled
+    // REMOVE // @Disabled TO ENABLE THE TESTS
+    // @Disabled
     @Nested
     @DisplayName("deleteCard()")
     class DeleteCardTests {
 
+        @Mock
+        private CardRepository cardRepository;
+
+        @InjectMocks
+        private CardService cardService;
+
         @Test
         @DisplayName("Given existing card id when deleteCard then delete successfully")
         void givenExistingCardId_whenDeleteCard_thenDeleteSuccessfully() {
-
             // GIVEN
-            Mockito.when(cardRepository.existsById(1L))
-                    .thenReturn(true);
+            Long cardId = 1L;
+            Card mockCard = new Card();
+            mockCard.setId(cardId);
+
+            // Mock the behavior of cardRepository
+            Mockito.when(cardRepository.existsById(cardId)).thenReturn(true);  // Mock that card exists
+            Mockito.when(cardRepository.findById(cardId)).thenReturn(Optional.of(mockCard));  // Mock the card fetch
 
             // WHEN
-            cardService.deleteCard(1L);
+            cardService.deleteCard(cardId);
 
             // THEN
-            Mockito.verify(cardRepository).deleteById(1L);
+            Mockito.verify(cardRepository).deleteById(cardId);  // Verify delete is called
         }
 
         @Test
         @DisplayName("Given non-existing card id when deleteCard then throw exception")
         void givenNonExistingCardId_whenDeleteCard_thenThrowException() {
-
             // GIVEN
-            Mockito.when(cardRepository.existsById(1L))
-                    .thenReturn(false);
+            Long cardId = 1L;
+
+            // Mock the behavior of cardRepository
+            Mockito.when(cardRepository.existsById(cardId)).thenReturn(false);  // Mock that card doesn't exist
 
             // WHEN / THEN
-            assertThatThrownBy(() -> cardService.deleteCard(1L))
+            assertThatThrownBy(() -> cardService.deleteCard(cardId))
                     .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Card not found with id: 1");
+                    .hasMessage("Card not found with id: " + cardId);
 
-            Mockito.verify(cardRepository, Mockito.never()).deleteById(Mockito.any());
+            Mockito.verify(cardRepository, Mockito.never()).deleteById(Mockito.any());  // Verify delete is not called
         }
     }
+
+
 }

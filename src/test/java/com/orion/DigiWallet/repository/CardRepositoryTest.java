@@ -12,6 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // ALSO LOOK AT THE DBSCIPT.SQL AND DATAINSERT.SQL FILES IN MAIN FOLDER
 //RUN THE SHELL SCRIPT TO CREATE THE TABLES IN TEST DATABASE BEFORE RUNNING THE TESTS
 //TODO: 3.5.1: REMOVE @Disabled TO ENABLE THE TESTS
-@Disabled
+//@Disabled
 public class CardRepositoryTest {
 
     @Autowired
@@ -60,17 +63,26 @@ public class CardRepositoryTest {
     // Write a test to verify:
     // - A Card can be saved successfully
     // - Card ID is generated
-    @Disabled
+//    @Disabled
     @Test
     void shouldSaveCardSuccessfully() {
         // GIVEN
+        Card card = new Card();
+        card.setWallet(wallet);
+        card.setCardNumber("1234567812345678");
+        card.setCardType("CREDIT");
+        card.setExpiryDate(LocalDate.parse("2026-01-30"));
+        card.setIssuedAt(LocalDateTime.parse("2023-01-01T10:00:00"));
+        card.setStatus("ACTIVE");
+
+
 
 
         // WHEN
-
+        Card savedCard = cardRepository.save(card);
 
         // THEN
-
+        assertThat(savedCard.getId()).isNotNull();
     }
 
     //TODO: 3.5.4:
@@ -80,12 +92,23 @@ public class CardRepositoryTest {
     @Disabled
     void shouldFindCardByCardNumber() {
         // GIVEN
+        Card card = new Card();
+        card.setWallet(wallet);
+        card.setCardNumber("1234567812345678");
+        card.setCardType("CREDIT");
+        card.setExpiryDate(LocalDate.parse("2026-01-30"));
+        card.setIssuedAt(LocalDateTime.parse("2023-01-01T10:00:00"));
+        card.setStatus("ACTIVE");
+        Card savedCard = cardRepository.save(card);
 
 
         // WHEN
+        List<Card> fetchedCard = cardRepository.findByCardNumber("1234567812345678");
 
 
         // THEN
+        assertThat(fetchedCard).isNotEmpty();
+        assertThat(fetchedCard.get(0).getCardNumber()).isEqualTo(savedCard.getCardNumber());
 
     }
 
@@ -97,9 +120,24 @@ public class CardRepositoryTest {
     @Test
     void shouldCheckIfCardExistsByCardNumber() {
         // GIVEN
+        Card card = new Card();
+        card.setWallet(wallet);
+        card.setCardNumber("1234567812345678");
+        card.setCardType("CREDIT");
+        card.setExpiryDate(LocalDate.parse("2026-01-30"));
+        card.setIssuedAt(LocalDateTime.parse("2023-01-01T10:00:00"));
+        card.setStatus("ACTIVE");
+        Card savedCard = cardRepository.save(card);
 
 
-        // WHEN + THEN
+        // WHEN
+//        boolean fetchedCard1 =
+//        boolean fetchedCard2 =
+
+
+        // THEN
+        assertThat(cardRepository.existsByCardNumber("1234567812345678")).isTrue();
+        assertThat(cardRepository.existsByCardNumber("1234567812345679")).isFalse();       // WHEN + THEN
 
     }
 }

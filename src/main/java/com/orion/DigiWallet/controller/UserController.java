@@ -53,6 +53,12 @@ public class UserController {
     // METHOD NAME: updateUserStatus
     // status (ACTIVE/INACTIVE)
     // RESPONSE BODY: Updated User JSON
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{id}")
+    public User updateUserStatus(@PathVariable Long id, @RequestParam String status) {
+        logger.info("PUT /api/users/{} called to update status to {}", id, status);
+        return userService.updateUserStatus(id);
+    }
 
 }
 
